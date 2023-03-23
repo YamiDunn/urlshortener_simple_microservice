@@ -35,9 +35,10 @@ const options = {
 const longUrl = [
   {
     Url: {
-      longU: "something",
-      shortU: "SmallSomething",
+      longU: "",
+      shortU: "",
       urlId: 0,
+      original_url: "",
     },
   },
 ];
@@ -79,6 +80,7 @@ app.route("/api/shorturl").post((req, res) => {
           longU: urlCheck,
           shortU: gNumber,
           urlId: index + 1,
+          original_url: originalUrl,
         });
         index = index + 1;
         res.json({ original_url: originalUrl, short_url: gNumber });
@@ -97,7 +99,7 @@ app.get("/api/shorturl/:short_url(\\d+)", (req, res) => {
   let short_url = req.params.short_url;
   let temp = longUrl.find((el) => el.shortU == short_url );
   if (temp) {
-    res.redirect(temp.longU);
+    res.redirect(temp.original_url);
   } else {
     console.log("Redirection url failed");
   };
