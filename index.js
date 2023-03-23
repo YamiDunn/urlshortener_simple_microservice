@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const { urlencoded } = require("body-parser");
 const dns = require("dns");
+const { url } = require("inspector");
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -64,12 +65,13 @@ app.route("/api/shorturl").post((req, res) => {
   });
   if (validateUrl(originalUrl)) {
     urlCheck = originalUrl;
-    if (urlCheck[urlCheck.length - 1] !== "/") {
+    urlCheck = urlCheck.replace(/\/$/, '','');
+    /*if (urlCheck[urlCheck.length - 1] !== "/") {
       urlCheck = urlCheck + "/";
       console.log(urlCheck, "you are here, urlcheck");
     } else {
       console.log("String already have a slash");
-    };
+    };*/
     try {
       let temp = longUrl.find((el) => el.longU == urlCheck);
       if (temp) {
@@ -91,7 +93,7 @@ app.route("/api/shorturl").post((req, res) => {
       res.status(500).json("Server Error");
     }
   } else {
-    res.status(400).json({ "error:": "invalid url" });
+    res.status(400).json({ "error": "invalid url" });
   }
 });
 
